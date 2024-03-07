@@ -23,6 +23,24 @@ pipeline{
                 )
             }
         }
+        stage('passwords'){
+            steps{
+                withVault([
+                    configuration: [vaultCredentialId: 'vaultsecret-test'],
+                    vaultsecrets;
+                    [
+                        [path: 'secre/creds/aws',
+                        secretValues:
+                        [
+                            [envVar: "AWS_ACCESS_KEY", vaultKey: "AWS_ACCESS_KEY_ID"],
+                            [envVar: "AWS_SECRET_ACCESS_KEY", vaultKey: "AWS_SECRET_KEY_ID"],
+                            [envVar: "USER_IAM", vaultKey: "USER_IAM_KEY"]
+                        ]
+                        ]
+                    ]
+                ])
+            }
+        }
         stage('Initialize'){
             steps{
                 // This initializes your Terraform workspace
